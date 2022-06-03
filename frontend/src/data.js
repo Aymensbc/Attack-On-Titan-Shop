@@ -8,7 +8,7 @@ export const sliderItems = [
   },
   {
     id: 2,
-    img: "https://w7.pngwing.com/pngs/1005/932/png-transparent-mikasa-from-attack-on-titan-mikasa-ackerman-eren-yeager-attack-on-titan-armin-arlert-rendering-robocop-miscellaneous-heroes-weapon-thumbnail.png",
+    img: "https://www.pngitem.com/pimgs/m/198-1988890_mikasa-png-transparent-png.png",
     title: "AUTUMN COLLECTION",
     desc: "DON'T COMPROMISE ON STYLE! GET FLAT 30% OFF FOR NEW ARRIVALS.",
     bg: "fcf1ed",
@@ -16,7 +16,7 @@ export const sliderItems = [
   {
     id: 3,
     img: "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/eda4f3b5-82bc-4588-b584-44f642c0b3da/d6j5u0x-b217d6e4-c590-4147-a24c-c71f1bfe5a67.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcL2VkYTRmM2I1LTgyYmMtNDU4OC1iNTg0LTQ0ZjY0MmMwYjNkYVwvZDZqNXUweC1iMjE3ZDZlNC1jNTkwLTQxNDctYTI0Yy1jNzFmMWJmZTVhNjcucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.xOy58ypUISQAnhIEsyK3KI400tB8DV0x9qci9Pyc1z0",
-    title: "LOUNGEWEAR LOVE",
+    title: "SHIRTS",
     desc: "DON'T COMPROMISE ON STYLE! GET FLAT 30% OFF FOR NEW ARRIVALS.",
     bg: "fbf0f4",
   },
