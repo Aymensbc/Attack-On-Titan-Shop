@@ -43,19 +43,19 @@ export const categories = [
 export const popularProducts = [
   {
     id: 1,
-    img: "https://d3o2e4jr3mxnm3.cloudfront.net/Mens-Jake-Guitar-Vintage-Crusher-Tee_68382_1_lg.png",
+    img: "https://i.pinimg.com/736x/0b/28/67/0b2867be978208ee3d2f36fc49e14dc7--rope-bracelets-anime-shop.jpg",
   },
   {
     id: 2,
-    img: "https://cdn.shopify.com/s/files/1/0101/4832/products/Angela_Natural_Tee.png?v=1606780388",
+    img: "https://vangogh.teespring.com/v3/image/TUtw4mcjyXCa2GaNPRN1Eox1Zt8/480/560.jpg",
   },
   {
     id: 3,
-    img: "https://www.prada.com/content/dam/pradanux_products/U/UCS/UCS319/1YOTF010O/UCS319_1YOT_F010O_S_182_SLF.png",
+    img: "https://i.pinimg.com/originals/53/52/83/53528382823c9006de5453193d7ae136.jpg",
   },
   {
     id: 4,
-    img: "https://www.burdastyle.com/pub/media/catalog/product/cache/7bd3727382ce0a860b68816435d76e26/107/BUS-PAT-BURTE-1320516/1170x1470_BS_2016_05_132_front.png",
+    img: "https://ih1.redbubble.net/image.2214476927.4398/st,small,507x507-pad,600x600,f8f8f8.jpg",
   },
   {
     id: 5,
@@ -67,7 +67,7 @@ export const popularProducts = [
   },
   {
     id: 7,
-    img: "https://www.vintageindustries.nl/download_front/qympzk1762/2217_Arrow_Jacket_Forest.png",
+    img: "https://m.media-amazon.com/images/I/51wrcvCOcrL._AC_UX679_.jpg",
   },
   {
     id: 8,
