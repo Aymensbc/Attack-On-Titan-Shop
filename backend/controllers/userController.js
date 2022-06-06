@@ -1,6 +1,7 @@
 const User = require("../models/userModel");
 const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 // @desc    Register a User
 // @route   POST api/users
@@ -38,6 +39,7 @@ const registerUser = asyncHandler(async (req, res) => {
       _id: newUser.id,
       username: newUser.username,
       email: newUser.email,
+      token: generateToken(newUser),
     });
   } else {
     res.status(400);
@@ -52,14 +54,31 @@ const loginUser = asyncHandler(async (req, res) => {
   const { username, password } = req.body;
 
   const user = await User.findOne({ username });
+  const token = generateToken(user);
 
   if (user && password && (await bcrypt.compare(password, user.password))) {
     const { password, ...other } = user._doc;
-    res.json(other);
+    res.json({ ...other, token });
   } else {
     res.status(400);
     throw new Error("Incorrect username or password");
   }
 });
 
-module.exports = { registerUser, loginUser };
+// @desc    Update a User
+// @route   PUT api/users/id
+// @access   Private
+const updateUser = asyncHandler(async (req, res) => {
+  res.json(req.user);
+});
+
+//Generate JWT token
+const generateToken = (user) => {
+  return jwt.sign(
+    { id: user._id, isAdmin: user.isAdmin },
+    process.env.JWT_SECRET,
+    { expiresIn: "5d" }
+  );
+};
+
+module.exports = { registerUser, loginUser, updateUser };
