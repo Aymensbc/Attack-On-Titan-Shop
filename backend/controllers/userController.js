@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 
 // @desc    Register a User
 // @route   POST api/users
-//@access   Public
+// @access   Public
 const registerUser = asyncHandler(async (req, res) => {
   const { username, email, password } = req.body;
 
@@ -45,4 +45,21 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { registerUser };
+// @desc    Login a User
+// @route   POST api/users/login
+// @access   Public
+const loginUser = asyncHandler(async (req, res) => {
+  const { username, password } = req.body;
+
+  const user = await User.findOne({ username });
+
+  if (user && password && (await bcrypt.compare(password, user.password))) {
+    const { password, ...other } = user._doc;
+    res.json(other);
+  } else {
+    res.status(400);
+    throw new Error("Incorrect username or password");
+  }
+});
+
+module.exports = { registerUser, loginUser };
