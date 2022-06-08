@@ -26,14 +26,14 @@ const verifyToken = asyncHandler(async (req, res, next) => {
   }
 });
 
-const protect = async (req, res, next) => {
+const verifyTokenAndAuthorization = async (req, res, next) => {
   verifyToken(req, res, async () => {
     if (req.user.id === req.params.id || req.user.isAdmin) {
       next();
     } else {
-      throw new Error("You are not allowed");
+      res.status(403).json("You are not allowed");
     }
   });
 };
 
-module.exports = { protect };
+module.exports = { verifyToken, verifyTokenAndAuthorization };

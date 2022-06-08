@@ -69,7 +69,27 @@ const loginUser = asyncHandler(async (req, res) => {
 // @route   PUT api/users/id
 // @access   Private
 const updateUser = asyncHandler(async (req, res) => {
-  res.json(req.user);
+  //Check if user has updated their password
+  if (req.body.password) {
+    const password = req.body.password;
+    const salt = await bcrypt.genSalt(10);
+    req.body.password = await bcrypt.hash(password, salt);
+  }
+
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      req.params.id,
+      {
+        $set: req.body,
+      },
+      { new: true }
+    );
+    res.status(200);
+    res.json(updatedUser);
+  } catch (err) {
+    res.status(500);
+    throw new Error("Canot be updated");
+  }
 });
 
 //Generate JWT token
