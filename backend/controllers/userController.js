@@ -131,12 +131,36 @@ const getUser = asyncHandler(async (req, res) => {
 });
 
 // @desc    Get all  Users
-// @route   GET api/users/id
+// @route   GET api/users/
 // @access   Private only admin
 const getAllUsers = asyncHandler(async (req, res) => {
   const users = await User.find();
   res.status(200);
   res.json(users);
+});
+
+// @desc    Get  User Stats
+// @route   GET api/users/id
+// @access   Private only admin
+const getUserStats = asyncHandler(async (req, res) => {
+  const date = new Date();
+  const lastYear = new Date(date.setFullYear(date.getFullYear - 1));
+
+  const data = await User.aggregate([
+    { $match: { createdAt: { $gte: lastYear } } },
+    {
+      $project: {
+        month: { $month: "$createdAt" },
+      },
+    },
+    {
+      $group: {
+        _id: "$month",
+        total: { $sum: 1 },
+      },
+    },
+  ]);
+  res.status(200).json(data);
 });
 
 //Generate JWT token
@@ -155,4 +179,5 @@ module.exports = {
   deleteUser,
   getUser,
   getAllUsers,
+  getUserStats,
 };

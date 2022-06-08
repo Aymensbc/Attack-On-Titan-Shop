@@ -13,8 +13,10 @@ const {
   deleteUser,
   getUser,
   getAllUsers,
+  getUserStats,
 } = require("../controllers/userController");
 
+router.get("/stats", verifyTokenAndAdmin, getUserStats);
 router.post("/", registerUser);
 router.post("/login", loginUser);
 router.put("/:id", verifyTokenAndAuthorization, updateUser);
