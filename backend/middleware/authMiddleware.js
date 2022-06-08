@@ -3,7 +3,7 @@ const asyncHandler = require("express-async-handler");
 const User = require("../models/userModel");
 
 const verifyToken = asyncHandler(async (req, res, next) => {
-  let token;
+  let token = null;
 
   if (
     req.headers.authorization &&
@@ -26,8 +26,8 @@ const verifyToken = asyncHandler(async (req, res, next) => {
   }
 });
 
-const verifyTokenAndAuthorization = async (req, res, next) => {
-  verifyToken(req, res, async () => {
+const verifyTokenAndAuthorization = (req, res, next) => {
+  verifyToken(req, res, () => {
     if (req.user.id === req.params.id || req.user.isAdmin) {
       next();
     } else {
@@ -36,4 +36,20 @@ const verifyTokenAndAuthorization = async (req, res, next) => {
   });
 };
 
-module.exports = { verifyToken, verifyTokenAndAuthorization };
+//Some things like products can only be updated by Admin , thus we need another middleware function
+
+const verifyTokenAndAdmin = async (req, res, next) => {
+  verifyToken(req, res, () => {
+    if (req.user && req.user.isAdmin) {
+      next();
+    } else {
+      res.status(403).json("Only admin is allowed");
+    }
+  });
+};
+
+module.exports = {
+  verifyToken,
+  verifyTokenAndAuthorization,
+  verifyTokenAndAdmin,
+};

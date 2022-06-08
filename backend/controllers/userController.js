@@ -54,6 +54,12 @@ const loginUser = asyncHandler(async (req, res) => {
   const { username, password } = req.body;
 
   const user = await User.findOne({ username });
+
+  if (!user) {
+    res.status(401);
+    throw new Error("User not found");
+  }
+
   const token = generateToken(user);
 
   if (user && password && (await bcrypt.compare(password, user.password))) {
@@ -76,20 +82,61 @@ const updateUser = asyncHandler(async (req, res) => {
     req.body.password = await bcrypt.hash(password, salt);
   }
 
-  try {
-    const updatedUser = await User.findByIdAndUpdate(
-      req.params.id,
-      {
-        $set: req.body,
-      },
-      { new: true }
-    );
-    res.status(200);
-    res.json(updatedUser);
-  } catch (err) {
+  const updatedUser = await User.findByIdAndUpdate(
+    req.params.id,
+    {
+      $set: req.body,
+    },
+    { new: true }
+  );
+
+  if (!updatedUser) {
     res.status(500);
     throw new Error("Canot be updated");
+  } else {
+    res.status(200);
+    res.json(updatedUser);
   }
+});
+
+// @desc    Delete a User
+// @route   DELETE api/users/id
+// @access   Private
+const deleteUser = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id);
+
+  if (!user) {
+    res.statusCode(400);
+    throw new Error("User not found");
+  }
+
+  await user.remove();
+  res.status(200).json(user);
+});
+
+// @desc    Get a single User
+// @route   GET api/users/id
+// @access   Private only admin
+const getUser = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id);
+
+  if (!user) {
+    res.status(401);
+    throw new Error("User not found");
+  } else {
+    const { password, ...other } = user._doc;
+    res.status(200);
+    res.json(other);
+  }
+});
+
+// @desc    Get all  Users
+// @route   GET api/users/id
+// @access   Private only admin
+const getAllUsers = asyncHandler(async (req, res) => {
+  const users = await User.find();
+  res.status(200);
+  res.json(users);
 });
 
 //Generate JWT token
@@ -101,4 +148,11 @@ const generateToken = (user) => {
   );
 };
 
-module.exports = { registerUser, loginUser, updateUser };
+module.exports = {
+  registerUser,
+  loginUser,
+  updateUser,
+  deleteUser,
+  getUser,
+  getAllUsers,
+};
