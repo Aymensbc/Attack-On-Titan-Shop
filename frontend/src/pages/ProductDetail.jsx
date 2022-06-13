@@ -128,7 +128,13 @@ const ProductDetail = () => {
   };
 
   const handleCart = () => {
-    dispatch(addProduct({ productItem, quantity }));
+    dispatch(
+      addProduct({
+        product: productItem,
+        quantity,
+        price: productItem.price * quantity,
+      })
+    );
   };
   return (
     <>
