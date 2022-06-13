@@ -7,6 +7,8 @@ import { Add, Remove } from "@mui/icons-material";
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import productService from "../services/productsService";
+import { useDispatch } from "react-redux";
+import { addProduct } from "../features/cartSlice";
 
 const Wrapper = styled.div`
   padding: 50px;
@@ -105,10 +107,11 @@ const Button = styled.button`
 `;
 
 const ProductDetail = () => {
+  const dispatch = useDispatch();
   const location = useLocation();
   const productId = location.pathname.split("/")[3];
   const [productItem, setProductItem] = useState({});
-  const [amount, setAmount] = useState(1);
+  const [quantity, setAmount] = useState(1);
   const [color, setColor] = useState();
   const [size, setSize] = useState();
 
@@ -120,8 +123,12 @@ const ProductDetail = () => {
 
   const handleClick = (method) => {
     if (method === "dec") {
-      amount > 1 && setAmount(amount - 1);
-    } else setAmount(amount + 1);
+      quantity > 1 && setAmount(quantity - 1);
+    } else setAmount(quantity + 1);
+  };
+
+  const handleCart = () => {
+    dispatch(addProduct({ productItem, quantity }));
   };
   return (
     <>
@@ -161,10 +168,10 @@ const ProductDetail = () => {
           <AddContainer>
             <AmountContainer>
               <Remove onClick={() => handleClick("dec")} />
-              <Amount>{amount}</Amount>
+              <Amount>{quantity}</Amount>
               <Add onClick={() => handleClick("add")} />
             </AmountContainer>
-            <Button>ADD TO CART</Button>
+            <Button onClick={handleCart}>ADD TO CART</Button>
           </AddContainer>
         </InfoContainer>
       </Wrapper>
