@@ -4,6 +4,9 @@ import Newsletter from "../components/Newsletter";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import { Add, Remove } from "@mui/icons-material";
+import { useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+import productService from "../services/productsService";
 
 const Wrapper = styled.div`
   padding: 50px;
@@ -102,48 +105,64 @@ const Button = styled.button`
 `;
 
 const ProductDetail = () => {
+  const location = useLocation();
+  const productId = location.pathname.split("/")[3];
+  const [productItem, setProductItem] = useState({});
+  const [amount, setAmount] = useState(1);
+  const [color, setColor] = useState();
+  const [size, setSize] = useState();
+
+  useEffect(() => {
+    productService
+      .getProductDetail(productId)
+      .then((response) => setProductItem(response));
+  }, [productId]);
+
+  const handleClick = (method) => {
+    if (method === "dec") {
+      amount > 1 && setAmount(amount - 1);
+    } else setAmount(amount + 1);
+  };
   return (
     <>
       <Navbar />
       <Announcement />
       <Wrapper>
         <ImgContainer>
-          <Image src="https://www.kindpng.com/picc/m/125-1257355_attack-on-titan-png-transparent-png.png" />
+          <Image src={productItem.img} />
         </ImgContainer>
         <InfoContainer>
-          <Title> JACKET</Title>
-          <Desc>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores
-            beatae commodi rerum eveniet atque praesentium, veritatis
-            voluptatibus sit dignissimos esse ullam, eos quibusdam placeat omnis
-            adipisci, at ipsam tempora. Delectus?
-          </Desc>
-          <Price>$ 20 </Price>
+          <Title>{productItem.title}</Title>
+          <Desc>{productItem.desc}</Desc>
+          <Price>$ {productItem.price} </Price>
           <FilterContainer>
             <Filter>
               <FilterTitle>Color</FilterTitle>
-              <FilterColor color="black" />
-              <FilterColor color="darkblue" />
-              <FilterColor color="grey" />
+              {productItem.color?.map((c) => (
+                <FilterColor
+                  onClick={() => {
+                    setColor(c);
+                  }}
+                  color={c}
+                  key={c}
+                />
+              ))}
             </Filter>
 
             <Filter>
               <FilterTitle>Size</FilterTitle>
-              <FilterSize>
-                <FilterSizeOption>XS</FilterSizeOption>
-                <FilterSizeOption>S</FilterSizeOption>
-                <FilterSizeOption>M</FilterSizeOption>
-                <FilterSizeOption>L</FilterSizeOption>
-                <FilterSizeOption>XL</FilterSizeOption>
-                <FilterSizeOption>XS</FilterSizeOption>
+              <FilterSize onChange={(event) => setSize(event.target.value)}>
+                {productItem.size?.map((s) => (
+                  <FilterSizeOption key={s}>{s}</FilterSizeOption>
+                ))}
               </FilterSize>
             </Filter>
           </FilterContainer>
           <AddContainer>
             <AmountContainer>
-              <Remove />
-              <Amount>1</Amount>
-              <Add />
+              <Remove onClick={() => handleClick("dec")} />
+              <Amount>{amount}</Amount>
+              <Add onClick={() => handleClick("add")} />
             </AmountContainer>
             <Button>ADD TO CART</Button>
           </AddContainer>

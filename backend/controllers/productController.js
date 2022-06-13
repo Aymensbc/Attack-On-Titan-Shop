@@ -78,7 +78,7 @@ const getProduct = asyncHandler(async (req, res) => {
 });
 
 // @desc    Get all products
-// @route   GET api/product/:id
+// @route   GET api/product/
 // @access   public (Any body can see products)
 //Here we can have 2 queries , not only new products but also fetching producst by category
 const getAllProducts = asyncHandler(async (req, res) => {
