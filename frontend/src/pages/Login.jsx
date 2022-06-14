@@ -107,8 +107,7 @@ const Login = () => {
           <Button type="submit" disabled={isLoading}>
             LOGIN
           </Button>
-          <Link>FORGOT PASSWORD?</Link>
-          <Link>CREATE A NEW ACCOUNT</Link>
+          <Link href="/register">CREATE A NEW ACCOUNT</Link>
         </Form>
       </Wrapper>
     </Container>

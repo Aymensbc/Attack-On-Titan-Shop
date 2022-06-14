@@ -7,7 +7,7 @@ import { Add, Remove } from "@mui/icons-material";
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import productService from "../services/productsService";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addProduct } from "../features/cartSlice";
 
 const Wrapper = styled.div`
@@ -114,6 +114,12 @@ const ProductDetail = () => {
   const [quantity, setAmount] = useState(1);
   const [color, setColor] = useState();
   const [size, setSize] = useState();
+
+  //Whenever new product is added . add cart to local storage
+  const cart = useSelector((state) => state.cart);
+  useEffect(() => {
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }, [cart]);
 
   useEffect(() => {
     productService

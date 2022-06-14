@@ -1,4 +1,5 @@
 import { Add, Remove } from "@mui/icons-material";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import Announcement from "../components/Announcement";
@@ -148,6 +149,7 @@ const Button = styled.button`
 
 const Cart = () => {
   const { products, totalPrice } = useSelector((state) => state.cart);
+
   return (
     <Container>
       <Navbar />

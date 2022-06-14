@@ -1,11 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+//Fetch cart from Local storage
+const cart = JSON.parse(localStorage.getItem("cart"));
+
 const cartSlice = createSlice({
   name: "cart",
   initialState: {
-    products: [],
-    quantity: 0,
-    totalPrice: 0,
+    products: cart ? cart.products : [],
+    quantity: cart ? cart.quantity : 0,
+    totalPrice: cart ? cart.totalPrice : 0,
   },
   reducers: {
     addProduct: (state, action) => {
@@ -13,8 +16,13 @@ const cartSlice = createSlice({
       state.products.push(action.payload);
       state.totalPrice += action.payload.price * action.payload.quantity;
     },
+    resetCart: (state) => {
+      state.products = [];
+      state.quantity = 0;
+      state.totalPrice = 0;
+    },
   },
 });
 
-export const { addProduct } = cartSlice.actions;
+export const { addProduct, resetCart } = cartSlice.actions;
 export default cartSlice.reducer;

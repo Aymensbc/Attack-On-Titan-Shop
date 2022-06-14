@@ -35,7 +35,6 @@ const Button = styled.button`
   font-weight: bold;
 `;
 const CategoryItem = ({ item }) => {
-  console.log(item);
   return (
     <Container>
       <Link to={`/products/${item.category}`}>

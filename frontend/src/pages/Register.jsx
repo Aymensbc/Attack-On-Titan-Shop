@@ -1,4 +1,10 @@
+import { useState } from "react";
 import styled from "styled-components";
+import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { register, reset } from "../features/userSlice";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   width: 100vw;
@@ -46,17 +52,78 @@ const Button = styled.button`
 `;
 
 const Register = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    name: "",
+    username: "",
+    email: "",
+    password: "",
+    password1: "",
+  });
+
+  const { name, username, email, password, password1 } = formData;
+
+  const { isSuccess, error, isLoading, message, currentUser } = useSelector(
+    (state) => state.user
+  );
+
+  const handleRegister = (event) => {
+    event.preventDefault();
+
+    if (password !== password1) toast.error("passwords dont match");
+    else {
+      const userdata = {
+        username,
+        email,
+        password,
+        name,
+      };
+      dispatch(register(userdata));
+    }
+  };
+
+  const handleChange = (event) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      [event.target.name]: event.target.value,
+    }));
+  };
+
+  useEffect(() => {
+    if (isSuccess || currentUser) {
+      navigate("/");
+    }
+    if (error) {
+      toast.error(message);
+    }
+
+    dispatch(reset);
+  }, [error, message, isSuccess, currentUser, dispatch, navigate]);
+
   return (
     <Container>
       <Wrapper>
         <Title>CREATE AN ACCOUNT</Title>
-        <Form>
-          <Input placeholder="Username" />
-          <Input placeholder="Name" />
-          <Input placeholder="Email" />
-          <Input placeholder="Password" />
-          <Input placeholder="Confirm Password" />
-          <Button>CREATE</Button>
+        <Form onSubmit={handleRegister}>
+          <Input
+            name="username"
+            onChange={handleChange}
+            placeholder="Username"
+          />
+          <Input name="name" onChange={handleChange} placeholder="Name" />
+          <Input name="email" onChange={handleChange} placeholder="Email" />
+          <Input
+            name="password"
+            onChange={handleChange}
+            placeholder="Password"
+          />
+          <Input
+            name="password1"
+            onChange={handleChange}
+            placeholder="Confirm Password"
+          />
+          <Button type="submit">CREATE</Button>
         </Form>
       </Wrapper>
     </Container>
