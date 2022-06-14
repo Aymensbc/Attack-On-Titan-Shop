@@ -1,4 +1,10 @@
+import { useState } from "react";
 import styled from "styled-components";
+import { useDispatch, useSelector } from "react-redux";
+import { login, reset } from "../features/userSlice";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const Container = styled.div`
   width: 100vw;
@@ -43,6 +49,10 @@ const Button = styled.button`
   margin-bottom: 10px;
   color: white;
   cursor: pointer;
+  &:disabled {
+    color: green;
+    cursor: not-allowed;
+  }
 `;
 const Link = styled.a`
   margin: 5px 0px;
@@ -52,14 +62,51 @@ const Link = styled.a`
 `;
 
 const Login = () => {
+  const [username, setUsername] = useState(null);
+  const [password, setPassword] = useState(null);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { isSuccess, error, currentUser, isLoading, message } = useSelector(
+    (state) => state.user
+  );
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const userdata = {
+      username,
+      password,
+    };
+    dispatch(login(userdata));
+  };
+
+  useEffect(() => {
+    if (isSuccess || currentUser) navigate("/");
+
+    if (error) {
+      toast.error(message);
+    }
+
+    dispatch(reset());
+  }, [isSuccess, currentUser, navigate, error, message, dispatch]);
+
   return (
     <Container>
       <Wrapper>
         <Title>SIGN IN</Title>
-        <Form>
-          <Input placeholder="Username" />
-          <Input placeholder="Password" />
-          <Button>LOGIN</Button>
+        <Form onSubmit={handleSubmit}>
+          <Input
+            placeholder="Username"
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <Input
+            placeholder="Password"
+            type="password"
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <Button type="submit" disabled={isLoading}>
+            LOGIN
+          </Button>
           <Link>FORGOT PASSWORD?</Link>
           <Link>CREATE A NEW ACCOUNT</Link>
         </Form>

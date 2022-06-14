@@ -130,9 +130,10 @@ const ProductDetail = () => {
   const handleCart = () => {
     dispatch(
       addProduct({
-        product: productItem,
+        ...productItem,
         quantity,
-        price: productItem.price * quantity,
+        color,
+        size,
       })
     );
   };
