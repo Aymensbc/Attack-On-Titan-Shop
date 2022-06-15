@@ -5,6 +5,7 @@ import { login, reset } from "../features/userSlice";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { getUserCart } from "../features/cartSlice";
 
 const Container = styled.div`
   width: 100vw;
@@ -81,13 +82,14 @@ const Login = () => {
   };
 
   useEffect(() => {
-    if (isSuccess || currentUser) navigate("/");
+    if (isSuccess && currentUser) {
+      dispatch(getUserCart());
+      navigate("/");
+    }
 
     if (error) {
       toast.error(message);
     }
-
-    dispatch(reset());
   }, [isSuccess, currentUser, navigate, error, message, dispatch]);
 
   return (

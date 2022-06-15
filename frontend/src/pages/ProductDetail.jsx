@@ -8,7 +8,8 @@ import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import productService from "../services/productsService";
 import { useDispatch, useSelector } from "react-redux";
-import { addProduct } from "../features/cartSlice";
+import { addToCart } from "../features/cartSlice";
+import { toast } from "react-toastify";
 
 const Wrapper = styled.div`
   padding: 50px;
@@ -112,14 +113,11 @@ const ProductDetail = () => {
   const productId = location.pathname.split("/")[3];
   const [productItem, setProductItem] = useState({});
   const [quantity, setAmount] = useState(1);
-  const [color, setColor] = useState();
-  const [size, setSize] = useState();
+  const [color, setColor] = useState(null);
+  const [size, setSize] = useState(null);
 
-  //Whenever new product is added . add cart to local storage
-  const cart = useSelector((state) => state.cart);
-  useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(cart));
-  }, [cart]);
+  //Get user so that if no user then dont add products to cart
+  const { currentUser } = useSelector((state) => state.user);
 
   useEffect(() => {
     productService
@@ -133,15 +131,35 @@ const ProductDetail = () => {
     } else setAmount(quantity + 1);
   };
 
+  //if only one color and size
+  useEffect(() => {
+    if (productItem.size && productItem.color) {
+      if (productItem.size.length === 1) {
+        setSize(productItem.size[0]);
+      }
+      if (productItem.color.length === 1) {
+        setColor(productItem.color[0]);
+      }
+    }
+  }, [productItem]);
+
   const handleCart = () => {
-    dispatch(
-      addProduct({
-        ...productItem,
-        quantity,
-        color,
-        size,
-      })
-    );
+    const productData = {
+      ...productItem,
+      price: productItem.price,
+      productId: productItem._id,
+      quantity,
+      size,
+      color,
+      img: productItem.img,
+      title: productItem.title,
+      desc: productItem.desc,
+    };
+    if (currentUser) {
+      dispatch(addToCart(productData));
+    } else {
+      toast.info("Create an account or login to add to cart");
+    }
   };
   return (
     <>

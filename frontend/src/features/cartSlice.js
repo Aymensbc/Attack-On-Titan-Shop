@@ -1,28 +1,88 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import cartService from "../services/cartService";
 
 //Fetch cart from Local storage
 const cart = JSON.parse(localStorage.getItem("cart"));
 
+//get User's cart
+export const getUserCart = createAsyncThunk(
+  "cart/getUsercart",
+  async (_, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().user.currentUser.token;
+      return await cartService.getUserCart(token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const addToCart = createAsyncThunk(
+  "cart/addToCart",
+  async (productData, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().user.currentUser.token;
+      return await cartService.addToCart(productData, token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 const cartSlice = createSlice({
   name: "cart",
   initialState: {
-    products: cart ? cart.products : [],
-    quantity: cart ? cart.quantity : 0,
-    totalPrice: cart ? cart.totalPrice : 0,
+    cart: cart ? cart : null,
+    isSucess: false,
+    error: false,
+    message: "",
   },
   reducers: {
-    addProduct: (state, action) => {
-      state.quantity += 1; //cart quantity number
-      state.products.push(action.payload);
-      state.totalPrice += action.payload.price * action.payload.quantity;
-    },
     resetCart: (state) => {
-      state.products = [];
-      state.quantity = 0;
-      state.totalPrice = 0;
+      state.cart = null;
+      state.isSucess = false;
+      state.message = "";
+      state.error = false;
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getUserCart.fulfilled, (state, action) => {
+        state.isSucess = true;
+        state.error = false;
+        state.cart = action.payload;
+      })
+      .addCase(getUserCart.rejected, (state, action) => {
+        state.cart = null;
+        state.isSucess = false;
+        state.error = true;
+        state.message = action.payload;
+      })
+      .addCase(addToCart.fulfilled, (state, action) => {
+        state.isSucess = true;
+        state.error = false;
+        state.cart = action.payload;
+      })
+      .addCase(addToCart.rejected, (state, action) => {
+        state.cart = null;
+        state.isSucess = false;
+        state.error = true;
+        state.message = action.payload;
+      });
   },
 });
 
-export const { addProduct, resetCart } = cartSlice.actions;
+export const { resetCart } = cartSlice.actions;
 export default cartSlice.reducer;

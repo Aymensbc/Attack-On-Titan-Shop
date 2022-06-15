@@ -23,12 +23,13 @@ function App() {
           <Route exact path="/" element={<Home />} />
           <Route exact path="/products/:category" element={<ProductList />} />
           <Route exact path="/products/item/:id" element={<ProductDetail />} />
-          <Route exact path="/cart" element={<Cart />} />
-          <Route
+          <Route exact path="/cart" element={user ? <Cart /> : <Login />} />
+          {/* <Route
             exact
             path="/login"
             element={user ? <Navigate to="/" /> : <Login />}
-          />
+          /> */}
+          <Route exact path="/login" element={<Login />} />
           <Route
             exact
             path="/register"

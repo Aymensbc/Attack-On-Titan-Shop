@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logout, reset } from "../features/userSlice";
 import { resetCart } from "../features/cartSlice";
+import { useEffect, useState } from "react";
 
 const Container = styled.div`
   height: 60px;
@@ -46,8 +47,11 @@ const Center = styled.div`
   text-align: center;
 `;
 
-const Logo = styled.h1`
+const Logo = styled.a`
   font-weight: bold;
+  text-decoration: none;
+  color: black;
+  font-size: 30px;
 `;
 
 const Right = styled.div`
@@ -64,8 +68,9 @@ const MenuItem = styled.div`
 `;
 
 const Navbar = () => {
-  const { quantity } = useSelector((state) => state.cart);
+  const { cart } = useSelector((state) => state.cart);
   const { currentUser } = useSelector((state) => state.user);
+  const [cartQuantity, setCartQuantity] = useState(0);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -76,18 +81,23 @@ const Navbar = () => {
     navigate("/");
   };
 
+  useEffect(() => {
+    if (cart) setCartQuantity(cart.cartQuantity);
+    else setCartQuantity(0);
+  }, [cart, dispatch]);
+
   return (
     <Container>
       <Wrapper>
         <Left>
-          <Language>EN</Language>
-          <SearchContainer>
+          <Language></Language>
+          {/* <SearchContainer>
             <Input />
             <Search style={{ color: "gray", fontSize: 16 }} />
-          </SearchContainer>
+          </SearchContainer> */}
         </Left>
         <Center>
-          <Logo>SURVEY COPRS.</Logo>
+          <Logo href="/">SURVEY COPRS.</Logo>
         </Center>
         <Right>
           {currentUser ? (
@@ -104,7 +114,7 @@ const Navbar = () => {
           )}
           <Link to="/cart">
             <MenuItem>
-              <Badge badgeContent={quantity} color="primary">
+              <Badge badgeContent={cartQuantity} color="primary">
                 <ShoppingCartOutlined />
               </Badge>
             </MenuItem>

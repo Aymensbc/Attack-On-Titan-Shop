@@ -6,11 +6,11 @@ const Cart = require("../models/cartModel");
 // @access   private
 //any user can craete a new cart
 const createCart = asyncHandler(async (req, res) => {
-  const { productId, quantity } = req.body;
+  const { productId, quantity, price } = req.body;
   let cart;
 
-  if (!productId && !quantity) {
-    throw new Error("Plz enter amount and product ID");
+  if (!productId && !quantity && !price) {
+    throw new Error("Plz enter quantity, price and product ID");
   }
 
   cart = await Cart.findOne({ userId: req.user.id });
@@ -19,6 +19,8 @@ const createCart = asyncHandler(async (req, res) => {
     cart = await Cart.create({
       userId: req.user.id,
       products: req.body,
+      cartQuantity: 1,
+      totalPrice: req.body.quantity * req.body.price,
     });
     return res.status(200).json(cart);
   } else {
@@ -30,9 +32,12 @@ const createCart = asyncHandler(async (req, res) => {
       let product = cart.products[itemIndex];
       product.quantity = product.quantity + quantity;
       cart.products[itemIndex] = product;
+      cart.totalPrice = cart.totalPrice + price * quantity;
     } else {
       //Product doesnt exist so add new product in products array
-      cart.products.push({ productId, quantity });
+      cart.products.push({ productId, quantity, price });
+      cart.cartQuantity = cart.cartQuantity + 1;
+      cart.totalPrice = cart.totalPrice + quantity * price;
     }
     cart = await cart.save();
     return res.status(201).json(cart);

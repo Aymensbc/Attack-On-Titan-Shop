@@ -53,6 +53,7 @@ export const userSlice = createSlice({
       state.isSuccess = false;
       state.isLoading = false;
       state.message = "";
+      state.currentUser = null;
     },
   },
   extraReducers: (builder) => {

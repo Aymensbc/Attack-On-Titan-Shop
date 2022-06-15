@@ -1,10 +1,12 @@
 import { Add, Remove } from "@mui/icons-material";
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import styled from "styled-components";
 import Announcement from "../components/Announcement";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
+import { getUserCart, resetCart } from "../features/cartSlice";
 // import { mobile } from "../responsive";
 
 const Container = styled.div``;
@@ -148,7 +150,24 @@ const Button = styled.button`
 `;
 
 const Cart = () => {
-  const { products, totalPrice } = useSelector((state) => state.cart);
+  const { currentUser } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
+  const { cart, message, error, isSuccess } = useSelector(
+    (state) => state.cart
+  );
+
+  useEffect(() => {
+    if (error && !cart) {
+      toast.error(message);
+    }
+
+    if (!cart) {
+      dispatch(getUserCart());
+    }
+
+    if (isSuccess) dispatch(resetCart());
+  }, [currentUser, error, message, dispatch, cart, isSuccess]);
 
   return (
     <Container>
@@ -166,42 +185,43 @@ const Cart = () => {
         </Top>
         <Bottom>
           <Info>
-            {products.map((product) => (
-              <Product>
-                <ProductDetail>
-                  <Image src={product.img} />
-                  <Details>
-                    <ProductName>
-                      <b>Product:</b> {product.title}
-                    </ProductName>
-                    <ProductId>
-                      <b>ID:</b> {product._id}
-                    </ProductId>
-                    <ProductColor color={product.color} />
-                    <ProductSize>
-                      <b>Size:</b>
-                      {product.size}
-                    </ProductSize>
-                  </Details>
-                </ProductDetail>
-                <PriceDetail>
-                  <ProductAmountContainer>
-                    <Add />
-                    <ProductAmount>{product.quantity}</ProductAmount>
-                    <Remove />
-                  </ProductAmountContainer>
-                  <ProductPrice>
-                    $ {product.price * product.quantity}
-                  </ProductPrice>
-                </PriceDetail>
-              </Product>
-            ))}
+            {cart &&
+              cart.products.map((product) => (
+                <Product key={product._id}>
+                  <ProductDetail>
+                    <Image src={product.img} />
+                    <Details>
+                      <ProductName>
+                        <b>Product:</b> {product.title}
+                      </ProductName>
+                      <ProductId>
+                        <b>ID:</b> {product._id}
+                      </ProductId>
+                      <ProductColor color={product.color} />
+                      <ProductSize>
+                        <b>Size:</b>
+                        {product.size}
+                      </ProductSize>
+                    </Details>
+                  </ProductDetail>
+                  <PriceDetail>
+                    <ProductAmountContainer>
+                      <Add />
+                      <ProductAmount>{product.quantity}</ProductAmount>
+                      <Remove />
+                    </ProductAmountContainer>
+                    <ProductPrice>
+                      $ {product.price * product.quantity}
+                    </ProductPrice>
+                  </PriceDetail>
+                </Product>
+              ))}
           </Info>
           <Summary>
             <SummaryTitle>ORDER SUMMARY</SummaryTitle>
             <SummaryItem>
               <SummaryItemText>Subtotal</SummaryItemText>
-              <SummaryItemPrice>$ {totalPrice}</SummaryItemPrice>
+              <SummaryItemPrice>$ {cart && cart.totalPrice}</SummaryItemPrice>
             </SummaryItem>
             <SummaryItem>
               <SummaryItemText>Estimated Shipping</SummaryItemText>
@@ -213,7 +233,7 @@ const Cart = () => {
             </SummaryItem>
             <SummaryItem type="total">
               <SummaryItemText>Total</SummaryItemText>
-              <SummaryItemPrice>$ {totalPrice}</SummaryItemPrice>
+              <SummaryItemPrice>$ {cart && cart.totalPrice}</SummaryItemPrice>
             </SummaryItem>
             <Button>CHECKOUT NOW</Button>
           </Summary>
