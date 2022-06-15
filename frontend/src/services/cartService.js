@@ -28,9 +28,24 @@ const addToCart = async (productData, token) => {
   return response.data;
 };
 
+const deleteFromCart = async (productId, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const response = await axios.delete(API_URL + productId, config);
+  if (response.data) {
+    localStorage.setItem("cart", JSON.stringify(response.data));
+  }
+  console.log(response.data);
+  return response.data;
+};
+
 const cartService = {
   getUserCart,
   addToCart,
+  deleteFromCart,
 };
 
 export default cartService;

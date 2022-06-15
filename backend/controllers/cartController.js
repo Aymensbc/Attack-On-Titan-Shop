@@ -50,16 +50,15 @@ const createCart = asyncHandler(async (req, res) => {
 const deleteFromCart = asyncHandler(async (req, res) => {
   const productId = req.params.id;
   const cart = await Cart.findOne({ userId: req.user.id });
-  if (cart.products.length > 0) {
-    const product = await Cart.findOneAndUpdate(
-      { userId: req.user.id },
-      {
-        $pull: { products: { productId: productId } },
-      }
-    );
-    res.status(200).json(product);
-  } else {
-    throw new Error("Cart is empty");
+  const itemIndex = cart.products.findIndex((p) => p.productId == productId);
+  if (itemIndex > -1) {
+    //product exists so delete
+    const product = cart.products[itemIndex];
+    cart.cartQuantity = cart.cartQuantity - 1;
+    cart.totalPrice = cart.totalPrice - product.price * product.quantity;
+    cart.products.splice(itemIndex, 1);
+    const cartfinal = await cart.save();
+    return res.json(cartfinal);
   }
 });
 

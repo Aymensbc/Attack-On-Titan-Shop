@@ -1,4 +1,4 @@
-import { Add, Remove } from "@mui/icons-material";
+import { Delete } from "@mui/icons-material";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -6,7 +6,7 @@ import styled from "styled-components";
 import Announcement from "../components/Announcement";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
-import { getUserCart, resetCart } from "../features/cartSlice";
+import { deleteFromCart, getUserCart, resetCart } from "../features/cartSlice";
 // import { mobile } from "../responsive";
 
 const Container = styled.div``;
@@ -169,6 +169,10 @@ const Cart = () => {
     if (isSuccess) dispatch(resetCart());
   }, [currentUser, error, message, dispatch, cart, isSuccess]);
 
+  const handleDelete = (product) => {
+    console.log(product);
+    product.productId && dispatch(deleteFromCart(product.productId));
+  };
   return (
     <Container>
       <Navbar />
@@ -177,15 +181,12 @@ const Cart = () => {
         <Title>YOUR BAG</Title>
         <Top>
           <TopButton>CONTINUE SHOPPING</TopButton>
-          <TopTexts>
-            <TopText>Shopping Bag(2)</TopText>
-            <TopText>Your Wishlist (0)</TopText>
-          </TopTexts>
           <TopButton type="filled">CHECKOUT NOW</TopButton>
         </Top>
         <Bottom>
           <Info>
             {cart &&
+              cart.products &&
               cart.products.map((product) => (
                 <Product key={product._id}>
                   <ProductDetail>
@@ -206,9 +207,11 @@ const Cart = () => {
                   </ProductDetail>
                   <PriceDetail>
                     <ProductAmountContainer>
-                      <Add />
                       <ProductAmount>{product.quantity}</ProductAmount>
-                      <Remove />
+                      <Delete
+                        style={{ cursor: "pointer" }}
+                        onClick={() => handleDelete(product)}
+                      />
                     </ProductAmountContainer>
                     <ProductPrice>
                       $ {product.price * product.quantity}
