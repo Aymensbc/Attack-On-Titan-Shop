@@ -5,6 +5,7 @@ export const sliderItems = [
     title: "SUMMER SALE",
     desc: "DON'T COMPROMISE ON STYLE! GET FLAT 30% OFF FOR NEW ARRIVALS.",
     bg: "f5fafd",
+    category: "levi",
   },
   {
     id: 2,
@@ -26,7 +27,7 @@ export const categories = [
   {
     id: 1,
     img: "https://wallpaperaccess.com/full/5476186.jpg",
-    title: "SHIRT STYLE!",
+    title: "levi",
   },
   {
     id: 2,
