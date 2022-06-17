@@ -35,7 +35,7 @@ const createCart = asyncHandler(async (req, res) => {
       cart.totalPrice = cart.totalPrice + price * quantity;
     } else {
       //Product doesnt exist so add new product in products array
-      cart.products.push({ productId, quantity, price });
+      cart.products.push(req.body);
       cart.cartQuantity = cart.cartQuantity + 1;
       cart.totalPrice = cart.totalPrice + quantity * price;
     }

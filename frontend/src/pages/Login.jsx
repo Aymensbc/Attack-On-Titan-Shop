@@ -51,7 +51,7 @@ const Button = styled.button`
   color: white;
   cursor: pointer;
   &:disabled {
-    color: green;
+    color: grey;
     cursor: not-allowed;
   }
 `;
@@ -106,7 +106,10 @@ const Login = () => {
             type="password"
             onChange={(e) => setPassword(e.target.value)}
           />
-          <Button type="submit" disabled={isLoading}>
+          <Button
+            type="submit"
+            disabled={isLoading || username === null || password === null}
+          >
             LOGIN
           </Button>
           <Link href="/register">CREATE A NEW ACCOUNT</Link>
