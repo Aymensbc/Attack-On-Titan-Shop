@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Search, ShoppingCartOutlined } from "@mui/icons-material";
+import { ShoppingCartOutlined } from "@mui/icons-material";
 import { Badge } from "@mui/material";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";

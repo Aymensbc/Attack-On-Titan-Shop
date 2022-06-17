@@ -161,6 +161,7 @@ const Cart = () => {
     if (error && !cart) {
       toast.error(message);
     }
+    console.log(cart);
 
     if (!cart) {
       dispatch(getUserCart());

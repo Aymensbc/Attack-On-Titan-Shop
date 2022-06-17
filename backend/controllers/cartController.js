@@ -6,11 +6,11 @@ const Cart = require("../models/cartModel");
 // @access   private
 //any user can craete a new cart
 const createCart = asyncHandler(async (req, res) => {
-  const { productId, quantity, price } = req.body;
+  const { productId, quantity, price, img } = req.body;
   let cart;
 
-  if (!productId && !quantity && !price) {
-    throw new Error("Plz enter quantity, price and product ID");
+  if (!productId && !quantity && !price && !img) {
+    throw new Error("Plz enter quantity, price and product ID and image");
   }
 
   cart = await Cart.findOne({ userId: req.user.id });
