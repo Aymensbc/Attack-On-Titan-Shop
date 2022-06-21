@@ -64,7 +64,7 @@ const Register = () => {
 
   const { name, username, email, password, password1 } = formData;
 
-  const { isSuccess, error, isLoading, message, currentUser } = useSelector(
+  const { isSuccess, error, message, currentUser } = useSelector(
     (state) => state.user
   );
 

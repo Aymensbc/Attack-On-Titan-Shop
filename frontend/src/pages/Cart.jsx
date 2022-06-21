@@ -161,19 +161,20 @@ const Cart = () => {
     if (error && !cart) {
       toast.error(message);
     }
-    console.log(cart);
 
     if (!cart) {
       dispatch(getUserCart());
     }
 
-    if (isSuccess) dispatch(resetCart());
+    if (isSuccess) {
+      dispatch(resetCart());
+    }
   }, [currentUser, error, message, dispatch, cart, isSuccess]);
 
   const handleDelete = (product) => {
-    console.log(product);
     product.productId && dispatch(deleteFromCart(product.productId));
   };
+
   return (
     <Container>
       <Navbar />

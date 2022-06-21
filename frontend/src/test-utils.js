@@ -31,6 +31,35 @@ function render(
   return rtlRender(ui, { wrapper: Wrapper, ...renderOptions });
 }
 
+function renderforCart(
+  ui,
+
+  {
+    preloadedState,
+    store = configureStore({
+      reducer: {
+        user: userReducer,
+        cart: cartReducer,
+      },
+      preloadedState: {
+        user: {
+          currentUser: "River",
+        },
+      },
+    }),
+    ...renderOptions
+  } = {}
+) {
+  function Wrapper({ children }) {
+    return (
+      <Provider store={store}>
+        <Router>{children}</Router>
+      </Provider>
+    );
+  }
+  return rtlRender(ui, { wrapper: Wrapper, ...renderOptions });
+}
+
 export * from "@testing-library/react";
 
-export { render };
+export { render, renderforCart };
