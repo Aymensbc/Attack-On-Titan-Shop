@@ -1,5 +1,11 @@
+import { CHeader, CContainer } from "@coreui/react";
+
 const Header = () => {
-  return <div>Header</div>;
+  return (
+    <CHeader>
+      <CContainer fluid>Header</CContainer>
+    </CHeader>
+  );
 };
 
 export default Header;

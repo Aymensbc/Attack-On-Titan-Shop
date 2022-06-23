@@ -1,5 +1,11 @@
+import { CFooter } from "@coreui/react";
+
 const Footer = () => {
-  return <div>Footer</div>;
+  return (
+    <CFooter>
+      <div>SURVEY CORPS</div>
+    </CFooter>
+  );
 };
 
 export default Footer;

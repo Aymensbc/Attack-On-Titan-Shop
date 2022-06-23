@@ -9,6 +9,7 @@ import { changeUnfoldable } from "../features/sidebarSlice";
 import CIcon from "@coreui/icons-react";
 import { logoNegative } from "../assets/logo-negative";
 import { sygnet } from "../assets/sygnet";
+import SidebarNav from "./SidebarNav";
 
 const Sidebar = () => {
   const dispatch = useDispatch();
@@ -30,12 +31,11 @@ const Sidebar = () => {
         <CIcon className="sidebar-brand-narrow" icon={sygnet} height={35} />
       </CSidebarBrand>
 
-      <CSidebarNav>{/* <AppSidebarNav items={navigation} /> */}</CSidebarNav>
+      <CSidebarNav>{<SidebarNav />}</CSidebarNav>
       <CSidebarToggler
         className="d-none d-lg-flex"
         onClick={() => {
           dispatch(changeUnfoldable());
-          console.log(unfoldable);
         }}
       />
     </CSidebar>
