@@ -36,6 +36,7 @@ const Products = () => {
                   <CFormTextarea
                     label="Description of the Product"
                     rows="3"
+                    maxLength={12}
                   ></CFormTextarea>
                 </div>
 
