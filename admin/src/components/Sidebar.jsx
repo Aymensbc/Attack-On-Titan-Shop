@@ -17,15 +17,7 @@ const Sidebar = () => {
   const { unfoldable } = useSelector((state) => state.sidebar);
 
   return (
-    <CSidebar
-      position="fixed"
-      unfoldable={unfoldable}
-      visible={sidebarShow}
-      //   onVisibleChange={() => {
-      //     dispatch(changeSidebarShow());
-      //   }
-      // }
-    >
+    <CSidebar position="fixed" unfoldable={unfoldable} visible={sidebarShow}>
       <CSidebarBrand className="d-none d-md-flex" to="/">
         <CIcon className="sidebar-brand-full" icon={logoNegative} height={35} />
         <CIcon className="sidebar-brand-narrow" icon={sygnet} height={35} />

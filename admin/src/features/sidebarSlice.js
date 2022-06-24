@@ -16,5 +16,6 @@ const sidebarSlice = createSlice({
   },
 });
 
-export const { changeSidebarShow, changeUnfoldable } = sidebarSlice.actions;
+export const { changeSidebarShow, changeUnfoldable, changeOnHide } =
+  sidebarSlice.actions;
 export default sidebarSlice.reducer;
