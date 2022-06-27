@@ -1,3 +1,5 @@
+import { cilTrash } from "@coreui/icons";
+import CIcon from "@coreui/icons-react";
 import {
   CButton,
   CCard,
@@ -11,8 +13,26 @@ import {
   CFormTextarea,
   CRow,
   CTable,
+  CTableBody,
+  CTableDataCell,
+  CTableHead,
+  CTableHeaderCell,
+  CTableRow,
 } from "@coreui/react";
 import React from "react";
+
+const products = [
+  {
+    _id: "1234",
+    title: "somrthing",
+    desc: "Some description",
+    img: "https://i5.walmartimages.com/asr/53c55065-d6f8-4b57-8ceb-7c8f6a996e0e_1.692b6cb247612c4433a3d576dc4d816a.jpeg?odnHeight=612&odnWidth=612&odnBg=FFFFFF",
+    category: ["titans", "levi"],
+    size: "XL",
+    color: "black",
+    price: 23,
+  },
+];
 
 const Products = () => {
   return (
@@ -75,6 +95,72 @@ const Products = () => {
                   <CButton type="submit">Create new Product</CButton>
                 </CCol>
               </CForm>
+            </CCardBody>
+          </CCard>
+
+          <CCard className="mb-4">
+            <CCardHeader>
+              <strong>Products List</strong>
+            </CCardHeader>
+
+            <CCardBody>
+              <CTable align="middle" className="mb-0 border" responsive>
+                <CTableHead color="light">
+                  <CTableRow>
+                    <CTableHeaderCell className="text-center">
+                      Product
+                    </CTableHeaderCell>
+
+                    <CTableHeaderCell className="text-center">
+                      Product Title
+                    </CTableHeaderCell>
+
+                    <CTableHeaderCell className="text-center">
+                      Category
+                    </CTableHeaderCell>
+
+                    <CTableHeaderCell className="text-center">
+                      Price $
+                    </CTableHeaderCell>
+
+                    <CTableHeaderCell className="text-center">
+                      Delete Product
+                    </CTableHeaderCell>
+                  </CTableRow>
+                </CTableHead>
+
+                <CTableBody>
+                  {products.map((product) => (
+                    <CTableRow key={product._id}>
+                      <CTableDataCell className="text-center">
+                        <img
+                          className=" productImg"
+                          alt={product.title}
+                          src={product.img}
+                        />
+                      </CTableDataCell>
+
+                      <CTableDataCell className="text-center">
+                        {product.title}
+                      </CTableDataCell>
+
+                      <CTableDataCell className="text-center">
+                        {product.category.map((category) => (
+                          <p>{category}</p>
+                        ))}
+                      </CTableDataCell>
+
+                      <CTableDataCell className="text-center">
+                        {product.price}
+                      </CTableDataCell>
+
+                      <CTableDataCell className="text-center">
+                        <CIcon role="button" icon={cilTrash} size="xl" />
+                      </CTableDataCell>
+                    </CTableRow>
+                  ))}
+                </CTableBody>
+              </CTable>
             </CCardBody>
           </CCard>
         </CCol>

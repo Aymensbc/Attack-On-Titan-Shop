@@ -1,6 +1,4 @@
 import {
-  CRow,
-  CCol,
   CCardHeader,
   CCardBody,
   CTable,
@@ -45,64 +43,63 @@ const handleDelete = () => {};
 const Users = () => {
   return (
     <>
-      <CRow>
-        <CCol xs>
-          <CCard className="mb-4">
-            <CCardHeader>Users</CCardHeader>
-            <CCardBody>
-              <CTable align="middle" className="mb-0 border" hover responsive>
-                <CTableHead color="light">
-                  <CTableRow>
-                    <CTableHeaderCell className="text-center">
-                      <CIcon icon={cilPeople} />
-                      <span> Users</span>
-                    </CTableHeaderCell>
-                    <CTableHeaderCell className="text-center">
-                      Is Admin
-                    </CTableHeaderCell>
-                    <CTableHeaderCell className="text-center">
-                      Delete User
-                    </CTableHeaderCell>
-                  </CTableRow>
-                </CTableHead>
+      {/* <CRow>
+        <CCol xs> */}
+      <CCard className="mb-4">
+        <CCardHeader>Users</CCardHeader>
+        <CCardBody>
+          <CTable align="middle" className="mb-0 border" hover responsive>
+            <CTableHead color="light">
+              <CTableRow>
+                <CTableHeaderCell className="text-center">
+                  <CIcon icon={cilPeople} />
+                  <span> Users</span>
+                </CTableHeaderCell>
+                <CTableHeaderCell className="text-center">
+                  Is Admin
+                </CTableHeaderCell>
+                <CTableHeaderCell className="text-center">
+                  Delete User
+                </CTableHeaderCell>
+              </CTableRow>
+            </CTableHead>
 
-                <CTableBody>
-                  {users.map((user) => (
-                    <CTableRow key={user._id}>
-                      <CTableDataCell className="text-center">
-                        <div>{user.username}</div>
-                        <div className="small text-medium-emphasis">
-                          <span>{user.email}</span>
-                        </div>
-                      </CTableDataCell>
+            <CTableBody>
+              {users.map((user) => (
+                <CTableRow key={user._id}>
+                  <CTableDataCell className="text-center">
+                    <div>{user.username}</div>
+                    <div className="small text-medium-emphasis">
+                      <span>{user.email}</span>
+                    </div>
+                  </CTableDataCell>
 
-                      <CTableDataCell>
-                        <CFormSwitch
-                          className="d-flex justify-content-center"
-                          defaultChecked={user.isAdmin}
-                          size="lg"
-                          onClick={handleAdminClick}
-                          role="button"
-                        />
-                      </CTableDataCell>
+                  <CTableDataCell>
+                    <CFormSwitch
+                      className="d-flex justify-content-center"
+                      defaultChecked={user.isAdmin}
+                      size="lg"
+                      onClick={handleAdminClick}
+                      role="button"
+                    />
+                  </CTableDataCell>
 
-                      <CTableDataCell className="text-center">
-                        <CIcon
-                          type="button"
-                          icon={cilTrash}
-                          size="xl"
-                          onClick={handleDelete}
-                          role="button"
-                        />
-                      </CTableDataCell>
-                    </CTableRow>
-                  ))}
-                </CTableBody>
-              </CTable>
-            </CCardBody>
-          </CCard>
-        </CCol>
-      </CRow>
+                  <CTableDataCell className="text-center">
+                    <CIcon
+                      icon={cilTrash}
+                      size="xl"
+                      onClick={handleDelete}
+                      role="button"
+                    />
+                  </CTableDataCell>
+                </CTableRow>
+              ))}
+            </CTableBody>
+          </CTable>
+        </CCardBody>
+      </CCard>
+      {/* </CCol>
+      </CRow> */}
     </>
   );
 };
