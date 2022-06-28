@@ -5,15 +5,15 @@ const Product = require("../models/productModel");
 // @route   POST api/product
 // @access   private
 const createProduct = asyncHandler(async (req, res) => {
-  const { title, img, desc, category, color, size, price } = req.body;
-  if (!title || !desc || !img || !category || !color || !size || !price) {
+  console.log(req.file);
+  const { title, desc, category, color, size, price } = req.body;
+  if (!title || !desc || !category || !color || !size || !price) {
     res.status(400);
     throw new Error("Please enter all fields");
   }
 
   const newProduct = await Product.create({
     title,
-    img,
     category,
     desc,
     color,

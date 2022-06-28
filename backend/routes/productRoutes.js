@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const { uploadImage } = require("../middleware/imageMiddleware");
 
 const {
   createProduct,
