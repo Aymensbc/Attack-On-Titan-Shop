@@ -8,6 +8,7 @@
     "start": "nodemon backend/server.js",
     "server": "nodemon backend/server.js",
     "client": "npm start --prefix frontend",
+    "build": "react-scripts build",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "repository": {
